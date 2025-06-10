@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcDebuggingExam.Models;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace MvcDebuggingExam.Controllers
 {
@@ -15,13 +13,10 @@ namespace MvcDebuggingExam.Controllers
             new Product { Id = 3, Name = "Keyboard", Description = "Mechanical Keyboard", Price = 79.99m, Category = "Electronics" }
         };
 
-        public class HomeController : Controller
-{
-    public IActionResult Index()
-    {
-        return RedirectToAction("Index", "Products");
-    }
-}
+        public IActionResult Index()
+        {
+            return View(products);
+        }
 
         public IActionResult Details(int id)
         {
@@ -30,8 +25,9 @@ namespace MvcDebuggingExam.Controllers
             {
                 return NotFound();
             }
-            return View("~/Views/Products/Details.cshtml", product);
+            return View(product);
         }
+
 
         public IActionResult Create()
         {
@@ -83,9 +79,18 @@ namespace MvcDebuggingExam.Controllers
             return View(product);
         }
 
-        // Fixed parameter name to match form field name "id"
         [HttpPost]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int productId)
+        {
+            var product = products.FirstOrDefault(p => p.Id == productId);
+            if (product != null)
+            {
+                products.Remove(product);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DeleteConfirmed(int id)
         {
             var product = products.FirstOrDefault(p => p.Id == id);
             if (product != null)
