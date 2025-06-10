@@ -15,10 +15,13 @@ namespace MvcDebuggingExam.Controllers
             new Product { Id = 3, Name = "Keyboard", Description = "Mechanical Keyboard", Price = 79.99m, Category = "Electronics" }
         };
 
-        public IActionResult Index()
-        {
-            return View(products);
-        }
+        public class HomeController : Controller
+{
+    public IActionResult Index()
+    {
+        return RedirectToAction("Index", "Products");
+    }
+}
 
         public IActionResult Details(int id)
         {
