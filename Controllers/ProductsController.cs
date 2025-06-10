@@ -80,6 +80,7 @@ namespace MvcDebuggingExam.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int productId)
         {
             var product = products.FirstOrDefault(p => p.Id == productId);
